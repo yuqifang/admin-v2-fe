@@ -1,22 +1,26 @@
 /*
-* @Author: Rosen
+* @Author: YuQiFang
 * @Date:   2018-01-13 11:26:52
-* @Last Modified by:   Rosen
+* @Last Modified by:   YuQiFang
 * @Last Modified time: 2018-02-07 10:35:01
+*/
+/* 
+    说明：webpack.config.js是自己手动在根目录创建的，名字是固定的
 */
 const path              = require('path');
 const webpack           = require('webpack');
+// html-webpack-plugin打包生成单独的html文件,把对应的脚本和样式插入合适的位置，防止在更新的时候有浏览器缓存
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// extract-text-webpack-plugin将样式打包成单独文件
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 let WEBPACK_ENV = process.env.WEBPACK_ENV || 'dev';
-console.log(WEBPACK_ENV); 
+console.log('分析是什么环境?', WEBPACK_ENV);
 module.exports = {
-    entry: './src/app.jsx',
+    entry: './src/app.jsx', // 项目的入口文件路劲
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: WEBPACK_ENV === 'dev' 
-            ? '/dist/' : '//s.jianliwu.com/admin-v2-fe/dist/',
+        path: path.resolve(__dirname, 'dist'), // 打包之后的文件放到什么位置，这句话的意思是：解析一个路劲到根目录的dist文件夹下
+        publicPath: WEBPACK_ENV === 'dev' ? '/dist/' : '//s.jianliwu.com/admin-v2-fe/dist/',
         filename: 'js/app.js'
     },
     resolve: {
@@ -115,3 +119,10 @@ module.exports = {
         }
     }
 };
+
+// 问题src直接目录下的文件index.html是通过app.jsx是怎么建立起来联系的，  留心老师啥时候建立的这个src直接目录下的index.html???????
+
+// ReactDOM.render(
+//     <App />,
+//     document.getElementById('app')
+// );
