@@ -20,7 +20,8 @@ module.exports = {
     entry: './src/app.jsx', // 项目的入口文件路劲
     output: {
         path: path.resolve(__dirname, 'dist'), // 打包之后的文件放到什么位置，这句话的意思是：解析一个路劲到根目录的dist文件夹下
-        publicPath: WEBPACK_ENV === 'dev' ? '/dist/' : '//s.jianliwu.com/admin-v2-fe/dist/',
+        // 打包之后，页面需要的js,css, img等资源从根目录dist目录下开始找，这里配置了publicPath后  devServer: {}中的contentBase: './dist'就可不要了
+        publicPath: WEBPACK_ENV === 'dev' ? '/dist/' : '//s.jianliwu.com/admin-v2-fe/dist/', 
         filename: 'js/app.js'
     },
     resolve: {
@@ -33,10 +34,10 @@ module.exports = {
     },
     module: {
         rules: [
-            // react(jsx)语法的处理
+            // es6和react(jsx)语法的处理
             {
                 test: /\.jsx$/,
-                exclude: /(node_modules)/,
+                exclude: /(node_modules)/, // 排除node_modules这个文件夹，对这里的文件不做处理
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -44,7 +45,7 @@ module.exports = {
                     }
                 }
             },
-            // css文件的处理
+            // 将所有入口引用的*.css，移动到独立分离的css文件，样式将不在内嵌到JS中，而是放到一个单独的css文件当中
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
@@ -57,7 +58,7 @@ module.exports = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
+                    use: ['css-loader', 'sass-loader']  // 注意：scss依赖于node-sass的，因此需要手动安装node-sass    npm install node-sass --dev
                 })
             },
             // 图片的配置
@@ -68,7 +69,7 @@ module.exports = {
                         loader: 'url-loader',
                         options: {
                             limit: 8192,
-                            name: 'resource/[name].[ext]'
+                            name: 'resource/[name].[ext]'  // 指定路径 
                         }
                     }
                 ]
@@ -78,7 +79,7 @@ module.exports = {
                 test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
                 use: [
                     {
-                        loader: 'url-loader',
+                        loader: 'url-loader', // url-loader是依赖于file-loader npm install file-loader url-loader --dev
                         options: {
                             limit: 8192,
                             name: 'resource/[name].[ext]'
@@ -95,11 +96,11 @@ module.exports = {
             favicon: './favicon.ico'
         }),
         // 独立css文件
-        new ExtractTextPlugin("css/[name].css"),
+        new ExtractTextPlugin("css/[name].css"),  // [name]是一个变量
         // 提出公共模块
         new webpack.optimize.CommonsChunkPlugin({
-            name : 'common',
-            filename: 'js/base.js'
+            name : 'common', // 这个'common'是根据自己的爱好随意起的名字
+            filename: 'js/base.js' // 把通用的js打包放到一个指定目录下
         })
     ],
     devServer: {
@@ -126,3 +127,7 @@ module.exports = {
 //     <App />,
 //     document.getElementById('app')
 // );
+
+// 观察刚开始有哪些文件,各个文件建立的时间节点   怎么创建的？
+
+// new ExtractTextPlugin("css/[name].css"), 中的name是怎么传参的？？
