@@ -121,7 +121,9 @@ module.exports = {
     }
 };
 
-// 问题src直接目录下的文件index.html是通过app.jsx是怎么建立起来联系的，  留心老师啥时候建立的这个src直接目录下的index.html???????
+
+
+// 问题：src直接目录下的文件index.html及根目录下的app.jsx的文件是通过webpack.config.js联系起来的，  留心老师啥时候建立根目录下的index.html???????
 
 // ReactDOM.render(
 //     <App />,
